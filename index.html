@@ -330,11 +330,9 @@
             
             var webhookCounter = 1;
 
-            // --- 1. Dynamic Webhook UI Logic ---
             $('#add_webhook_btn').click(function() {
                 webhookCounter++;
                 
-                // Clone the first webhook entry
                 var newEntry = $('.webhook-entry:first').clone();
                 
                 // Update header text
@@ -386,7 +384,8 @@
                 var caUrl = $(this).siblings('.webhook-url').val();
 
                 if (!caUrl || caUrl.length < 5 || !caUrl.startsWith('http')) {
-                    alert('Please enter a valid URL starting with http:// or https://');
+                    //alert('Please enter a valid URL starting with http:// or https://');
+                    Swal.fire({ title: "Failed", text: "Please enter a valid URL starting with http:// or https://", icon: "error" });
                     return;
                 }
                 checkUrlExists(caUrl);
@@ -416,7 +415,7 @@
                 }
             }
 
-            // --- 3. Form Submission Logic ---
+            
             $('#callback_form').on('submit', function(event) {
                 event.preventDefault();
                 
@@ -505,20 +504,24 @@
                         
                         $.ajax(webhook_set).done(function (response) {
                             if(response.code){
-                                alert(response.code);
+                                //alert(response.code);
+                                Swal.fire({ title: "Success", text: response.code, icon: "success" });
                             } else {
                                 Swal.fire({ title: "Success", text: "Webhooks configured successfully!", icon: "success" });
                             }
                         }).fail(function (response) {
-                            alert(response.responseJSON.message);
+                            Swal.fire({ title: "Error", text: response.responseJSON.message, icon: "error" });
+                            //alert(response.responseJSON.message);
                         });
                         
                     }).fail(function(response) {
                         var error_code = response.responseJSON ? response.responseJSON.code : "Error";
                         if(error_code == "401"){
-                           alert("Unauthorized. Kindly check your Credentials");
+                           //alert("Unauthorized. Kindly check your Credentials");
+                            Swal.fire({ title: "Error", text: "Unauthorized. Kindly check your Credentials", icon: "error" });
                         } else {
-                            alert(error_code);
+                            Swal.fire({ title: "Error", text: error_code, icon: "error" });
+                            //alert(error_code);
                         }
                     });
                 } 
