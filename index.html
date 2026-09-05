@@ -15,13 +15,14 @@
             justify-content: center;
             align-items: center;
             margin: 0;
-            padding: 20px 0;
+            padding: 40px 0;
+            background-color: #f4f4f9; 
         }
         .container {
-            background: #6739B7;
-            padding: 20px;
+            background: #5e2b9d;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         .form-group {
             margin-bottom: 15px;
@@ -32,26 +33,28 @@
             width: 25%;
             float: left;
             margin-bottom: 0;
+            font-weight: bold;
         }
         .form-group input {
             width: 75%;
             float: right;
-            padding: 8px;
+            padding: 10px;
             box-sizing: border-box;
             border: none;
             border-radius: 5px;
         }
         .form-group button[type="submit"] {
-            width: 30%;
-            padding: 10px;
+            width: 40%;
+            padding: 12px;
             background: #fff;
             border: none;
             border-radius: 5px;
             color: #6739B7;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: .3s linear;
-            border: 2px solid;
+            border: 2px solid #fff;
         }
         .form-group button[type="submit"]:hover {
             background: #6739B7;
@@ -61,52 +64,60 @@
         .form_submit_wrap{
             display: flex;
             justify-content: center;
-        }
-        .mb-10{
-            margin-bottom: 10px;
-        }
-        .webhook_type_wrap label.form-check-label {
-            color: #6739B7;
+            margin-top: 20px;
         }
         .callback_form_container{
-            max-width: 50%;
+            max-width: 55%;
         }
-        .client_details_wrap, .webhook_type_wrap, .webhook_config_env_wrap{
-            padding: 10px;
-            border: 2px solid;
+        .client_details_wrap, .webhook_config_env_wrap{
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 10px;
+            background: rgba(0,0,0,0.05);
         }
         
-        /* New Styles for Dynamic Webhooks */
+        /* Styles for Dynamic Webhooks */
         .webhook-entry {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .webhook-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
         }
         .remove-webhook-btn {
             background: #dc3545;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             cursor: pointer;
-            float: right;
             font-size: 12px;
-            margin-top: 5px;
+            font-weight: bold;
         }
         .add-webhook-btn {
             background: #fff;
             color: #6739B7;
-            border: none;
-            padding: 8px 15px;
+            border: 2px dashed #6739B7;
+            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: block;
             width: 100%;
+            transition: 0.2s;
+        }
+        .add-webhook-btn:hover {
+            background: #f0e6ff;
         }
 
         button.verify-button {
@@ -114,33 +125,55 @@
             top: 0;
             right: 0;
             bottom: 0;
-            padding: 5px 10px;
-            border-radius: 3px;
+            padding: 5px 15px;
+            border-radius: 0 5px 5px 0;
             border: 0;
             width: auto;
-            background: transparent;
-            color: #333; /* Darker color for visibility on white input */
+            background: #e9ecef;
+            color: #333;
             font-weight: bold;
+            border-left: 1px solid #ccc;
         }
         button.verify-button:hover{
+            background: #d3d9df;
             color: #6739B7;
         }
         .callback_wrap{
             position: relative;
         }
-        @media(max-width: 1200px){
-            .callback_form_container {max-width: 85%;}
+
+        /* Accordion Customization */
+        .webhook_type_wrap {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            color: #333;
+            margin-top: 15px;
         }
-        @media(max-width: 1600px) and (min-width: 1201px){
-            .callback_form_container {max-width: 70%;}
+        .webhook_type_wrap label.form-check-label {
+            color: #333;
+            font-size: 14px;
         }
+        .accordion-button {
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #6739B7;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #f0e6ff;
+            color: #6739B7;
+        }
+        .accordion-body {
+            padding: 10px 15px;
+        }
+
+        @media(max-width: 1200px){ .callback_form_container {max-width: 85%;} }
         @media(max-width: 992px){
             .form-group label{width: 40%;}
             .form-group input{width: 60%;}
         }
-        @media(max-width: 767px){
-            .callback_form_container {max-width: 100%;}
-        }
+        @media(max-width: 767px){ .callback_form_container {max-width: 100%;} }
     </style>
 </head>
 <body>
@@ -148,199 +181,142 @@
         <h3 class="text-center mb-4">Webhook Configuration Portal</h3>
         <form id="callback_form" method="post">
             
-            <div class="client_details_wrap mb-3">
-                <h5 class="mb-3">Client Credentials</h5>
+            <div class="client_details_wrap mb-4">
+                <h5 class="mb-3">1. Client Credentials</h5>
                 <div class="form-group">
                     <label for="clientId">CLIENT_ID*</label>
-                    <input type="text" id="clientId" name="clientId" required placeholder="CLIENT_ID*">
+                    <input type="text" id="clientId" name="clientId" required placeholder="Enter Client ID">
                 </div>
                 <div class="form-group">
                     <label for="clientSecret">CLIENT_SECRET*</label>
-                    <input type="text" id="clientSecret" name="clientSecret" required placeholder="CLIENT_SECRET*">
+                    <input type="text" id="clientSecret" name="clientSecret" required placeholder="Enter Client Secret">
                 </div>
                 <div class="form-group">
                     <label for="clientVersion">CLIENT_VERSION*</label>
-                    <input type="text" id="clientVersion" name="clientVersion" required placeholder="CLIENT_VERSION*">
+                    <input type="text" id="clientVersion" name="clientVersion" required placeholder="1">
                 </div>
             </div>
 
-            <div id="webhook_container" class="client_details_wrap mb-3">
-                <h5 class="mb-3">Webhook Endpoints</h5>
+            <h5 class="mb-3 mt-4">2. Webhook Endpoints & Events Configuration</h5>
+            
+            <div id="webhook_container">
                 
                 <div class="webhook-entry">
+                    <div class="webhook-entry-header">
+                        <h6 class="mb-0">Webhook #1</h6>
+                    </div>
+
                     <div class="form-group">
                         <label>USERNAME*</label>
-                        <input type="text" class="webhook-username" minlength="5" maxlength="20" required placeholder="USERNAME*">
+                        <input type="text" class="webhook-username" minlength="5" maxlength="20" required placeholder="API Username">
                     </div>
                     <div class="form-group">
                         <label>PASSWORD*</label>
-                        <input type="password" class="webhook-password" minlength="8" maxlength="20" required placeholder="PASSWORD*">
+                        <input type="password" class="webhook-password" minlength="8" maxlength="20" required placeholder="API Password">
                     </div>
                     <div class="form-group callback_wrap">
                         <label>CALLBACK_URL*</label>
                         <input type="text" class="webhook-url" required placeholder="https://yourdomain.com/webhook">
                         <button type="button" class="verify-button">Verify</button>
                     </div>
+
+                    <div class="webhook_type_wrap">
+                        <p class="mb-2 text-center" style="font-size: 0.9rem;"><strong>WEBHOOK EVENTS TO CONFIGURE</strong></p>
+                        <p class="text-center"><small><u><b>Note</b></u>: Select at least one event from the below list</small></p>
+                        
+                        <div class="accordion webhook-events-accordion" id="accordion_1">
+                          
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_1_1">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1_1" aria-expanded="false" aria-controls="collapse_1_1">
+                                PAY PAGE Events
+                              </button>
+                            </h2>
+                            <div id="collapse_1_1" class="accordion-collapse collapse" aria-labelledby="heading_1_1" data-bs-parent="#accordion_1">
+                              <div class="accordion-body">
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="CHECKOUT_ORDER_COMPLETED"><label class="form-check-label">CHECKOUT_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="CHECKOUT_ORDER_FAILED"><label class="form-check-label">CHECKOUT_ORDER_FAILED</label></div>
+                                <!-- <div class="form-check"><input class="form-check-input" type="checkbox" value="CHECKOUT_SETUP_ORDER_COMPLETED"><label class="form-check-label">CHECKOUT_SETUP_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="CHECKOUT_SETUP_ORDER_FAILED"><label class="form-check-label">CHECKOUT_SETUP_ORDER_FAILED</label></div> -->
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_1_2">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1_2" aria-expanded="false" aria-controls="collapse_1_2">
+                                Custom Checkout Events
+                              </button>
+                            </h2>
+                            <div id="collapse_1_2" class="accordion-collapse collapse" aria-labelledby="heading_1_2" data-bs-parent="#accordion_1">
+                              <div class="accordion-body">
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PG_ORDER_COMPLETED"><label class="form-check-label">PG_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PG_ORDER_FAILED"><label class="form-check-label">PG_ORDER_FAILED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PG_REFUND_COMPLETED"><label class="form-check-label">PG_REFUND_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PG_REFUND_FAILED"><label class="form-check-label">PG_REFUND_FAILED</label></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_1_3">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1_3" aria-expanded="false" aria-controls="collapse_1_3">
+                                Subscription Events
+                              </button>
+                            </h2>
+                            <div id="collapse_1_3" class="accordion-collapse collapse" aria-labelledby="heading_1_3" data-bs-parent="#accordion_1">
+                              <div class="accordion-body">
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_SETUP_ORDER_COMPLETED"><label class="form-check-label">SUBSCRIPTION_SETUP_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_SETUP_ORDER_FAILED"><label class="form-check-label">SUBSCRIPTION_SETUP_ORDER_FAILED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_NOTIFICATION_COMPLETED"><label class="form-check-label">SUBSCRIPTION_NOTIFICATION_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_NOTIFICATION_FAILED"><label class="form-check-label">SUBSCRIPTION_NOTIFICATION_FAILED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_REDEMPTION_ORDER_COMPLETED"><label class="form-check-label">SUBSCRIPTION_REDEMPTION_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_REDEMPTION_ORDER_FAILED"><label class="form-check-label">SUBSCRIPTION_REDEMPTION_ORDER_FAILED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_REDEMPTION_TRANSACTION_COMPLETED"><label class="form-check-label">SUBSCRIPTION_REDEMPTION_TRANSACTION_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_REDEMPTION_TRANSACTION_FAILED"><label class="form-check-label">SUBSCRIPTION_REDEMPTION_TRANSACTION_FAILED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_CANCELLED"><label class="form-check-label">SUBSCRIPTION_CANCELLED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_PAUSED"><label class="form-check-label">SUBSCRIPTION_PAUSED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_UNPAUSED"><label class="form-check-label">SUBSCRIPTION_UNPAUSED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="SUBSCRIPTION_REVOKED"><label class="form-check-label">SUBSCRIPTION_REVOKED</label></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_1_4">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1_4" aria-expanded="false" aria-controls="collapse_1_4">
+                                PAY Link Events
+                              </button>
+                            </h2>
+                            <div id="collapse_1_4" class="accordion-collapse collapse" aria-labelledby="heading_1_4" data-bs-parent="#accordion_1">
+                              <div class="accordion-body">
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PAYLINK_ORDER_COMPLETED"><label class="form-check-label">PAYLINK_ORDER_COMPLETED</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" value="PAYLINK_ORDER_FAILED"><label class="form-check-label">PAYLINK_ORDER_FAILED</label></div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
                 </div>
-                
-            </div>
+                </div>
             
             <button type="button" id="add_webhook_btn" class="add-webhook-btn">+ Add Another Webhook URL</button>
 
-            <div class="webhook_type_wrap">
-                <p class="mb-10 text-center" style="font-size: 1rem;"><strong>WEBHOOK EVENTS TO CONFIGURE</strong></p>
-                <p class="text-center"><small><u><b>Note</b></u>: Select at least one event from the below list</small></p>
-                <div class="accordion" id="webhooksEventsCollapse">
-                  
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        PAY PAGE Events
-                      </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#webhooksEventsCollapse">
-                      <div class="accordion-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="CHECKOUT_ORDER_COMPLETED">
-                            <label class="form-check-label">CHECKOUT_ORDER_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="CHECKOUT_ORDER_FAILED">
-                            <label class="form-check-label">CHECKOUT_ORDER_FAILED</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Custom Checkout Events
-                      </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#webhooksEventsCollapse">
-                      <div class="accordion-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PG_ORDER_COMPLETED">
-                            <label class="form-check-label">PG_ORDER_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PG_ORDER_FAILED">
-                            <label class="form-check-label">PG_ORDER_FAILED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PG_REFUND_ACCEPTED">
-                            <label class="form-check-label">PG_REFUND_ACCEPTED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PG_REFUND_COMPLETED">
-                            <label class="form-check-label">PG_REFUND_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PG_REFUND_FAILED">
-                            <label class="form-check-label">PG_REFUND_FAILED</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Subscription Page Events
-                      </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#webhooksEventsCollapse">
-                      <div class="accordion-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_SETUP_ORDER_COMPLETED">
-                            <label class="form-check-label">SUBSCRIPTION_SETUP_ORDER_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_SETUP_ORDER_FAILED">
-                            <label class="form-check-label">SUBSCRIPTION_SETUP_ORDER_FAILED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_NOTIFICATION_COMPLETED">
-                            <label class="form-check-label">SUBSCRIPTION_NOTIFICATION_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_NOTIFICATION_FAILED">
-                            <label class="form-check-label">SUBSCRIPTION_NOTIFICATION_FAILED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_REDEMPTION_ORDER_COMPLETED">
-                            <label class="form-check-label">SUBSCRIPTION_REDEMPTION_ORDER_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_REDEMPTION_ORDER_FAILED">
-                            <label class="form-check-label">SUBSCRIPTION_REDEMPTION_ORDER_FAILED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_REDEMPTION_TRANSACTION_COMPLETED">
-                            <label class="form-check-label">SUBSCRIPTION_REDEMPTION_TRANSACTION_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_REDEMPTION_TRANSACTION_FAILED">
-                            <label class="form-check-label">SUBSCRIPTION_REDEMPTION_TRANSACTION_FAILED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_CANCELLED">
-                            <label class="form-check-label">SUBSCRIPTION_CANCELLED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_PAUSED">
-                            <label class="form-check-label">SUBSCRIPTION_PAUSED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_UNPAUSED">
-                            <label class="form-check-label">SUBSCRIPTION_UNPAUSED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="SUBSCRIPTION_REVOKED">
-                            <label class="form-check-label">SUBSCRIPTION_REVOKED</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFour">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paylinks" aria-expanded="false" aria-controls="paylinks">
-                        PAY Link Events
-                      </button>
-                    </h2>
-                    <div id="paylinks" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#webhooksEventsCollapse">
-                      <div class="accordion-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PAYLINK_ORDER_COMPLETED">
-                            <label class="form-check-label">PAYLINK_ORDER_COMPLETED</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="webhook_events[]" value="PAYLINK_ORDER_FAILED">
-                            <label class="form-check-label">PAYLINK_ORDER_FAILED</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-            </div> <br>
-
-            <div class="webhook_config_env_wrap">
-                <div class="form-radio">
+            <div class="webhook_config_env_wrap mb-4">
+                <h5 class="mb-3">3. Environment</h5>
+                <div class="form-check">
                     <input class="form-check-input" type="radio" value="UAT" id="env" name="env" checked>
-                    <label class="form-check-label" for="env">UAT</label>
+                    <label class="form-check-label text-white" for="env">UAT (Sandbox)</label>
                 </div>
-                <div class="form-radio">
+                <div class="form-check">
                     <input class="form-check-input" type="radio" value="PROD" name="env" id="env1" disabled>
-                    <label class="form-check-label" for="env1">Production</label>
+                    <label class="form-check-label text-white" for="env1" style="opacity: 0.6;">Production</label>
                 </div>
             </div>
             
-            <br>
             <div class="form-group form_submit_wrap">
-                <button type="submit">SUBMIT CONFIGURATION</button>
+                <button type="submit">Configure Webhooks</button>
             </div>
         </form>
     </div>
@@ -352,14 +328,50 @@
     <script> 
         $(document).ready(function() {
             
+            var webhookCounter = 1;
+
             // --- 1. Dynamic Webhook UI Logic ---
             $('#add_webhook_btn').click(function() {
+                webhookCounter++;
+                
                 // Clone the first webhook entry
                 var newEntry = $('.webhook-entry:first').clone();
-                // Clear the input values
-                newEntry.find('input').val('');
-                // Add a remove button to the new clone
-                newEntry.append('<button type="button" class="remove-webhook-btn">Remove</button>');
+                
+                // Update header text
+                newEntry.find('.webhook-entry-header h6').text('Webhook #' + webhookCounter);
+                
+                // Clear the input values & uncheck boxes
+                newEntry.find('input[type="text"], input[type="password"]').val('');
+                newEntry.find('input[type="checkbox"]').prop('checked', false);
+
+                // Re-write Bootstrap Accordion IDs so they don't conflict
+                var newAccordionId = 'accordion_' + webhookCounter;
+                newEntry.find('.webhook-events-accordion').attr('id', newAccordionId);
+
+                newEntry.find('.accordion-item').each(function(index) {
+                    var itemNum = index + 1;
+                    var headingId = 'heading_' + webhookCounter + '_' + itemNum;
+                    var collapseId = 'collapse_' + webhookCounter + '_' + itemNum;
+
+                    $(this).find('.accordion-header').attr('id', headingId);
+                    $(this).find('.accordion-button')
+                        .attr('data-bs-target', '#' + collapseId)
+                        .attr('aria-controls', collapseId)
+                        .addClass('collapsed')
+                        .attr('aria-expanded', 'false');
+                        
+                    $(this).find('.accordion-collapse')
+                        .attr('id', collapseId)
+                        .attr('aria-labelledby', headingId)
+                        .attr('data-bs-parent', '#' + newAccordionId)
+                        .removeClass('show'); // Ensure it is closed by default
+                });
+
+                // Add a remove button if it doesn't have one
+                if(newEntry.find('.remove-webhook-btn').length === 0) {
+                    newEntry.find('.webhook-entry-header').append('<button type="button" class="remove-webhook-btn">X Remove</button>');
+                }
+
                 // Append to container
                 $('#webhook_container').append(newEntry);
             });
@@ -371,26 +383,19 @@
 
             // --- 2. URL Verification Logic ---
             $(document).on('click', '.verify-button', function(event) {
-                // Find the specific URL input associated with the clicked button
                 var caUrl = $(this).siblings('.webhook-url').val();
 
                 if (!caUrl || caUrl.length < 5 || !caUrl.startsWith('http')) {
                     alert('Please enter a valid URL starting with http:// or https://');
                     return;
                 }
-
                 checkUrlExists(caUrl);
             });
 
             async function checkUrlExists(url) {
                 const dataToPost = { username: 'test', score: 100 };
                 try {
-                    const checkResponse = await fetch(url, {
-                        method: 'HEAD', 
-                        mode: 'cors',  
-                        cache: 'no-store'
-                    });
-
+                    const checkResponse = await fetch(url, { method: 'HEAD', mode: 'cors', cache: 'no-store' });
                     if (checkResponse.ok) {
                         const postResponse = await fetch(url, {
                             method: 'POST',
@@ -398,14 +403,13 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(dataToPost)
                         });
-
                         if (postResponse.ok) {
                             Swal.fire({ title: "Success", text: "Valid URL", icon: "success" });
                         } else {
                             Swal.fire({ title: "Failed", text: "URL not accepting the Data", icon: "error" });
                         }
                     } else {
-                        console.log(`URL not found or inaccessible. Status: ${checkResponse.status}`);
+                        console.log(`URL not found or inaccessible.`);
                     }
                 } catch (error) {
                     Swal.fire({ title: "Failed", text: "Network or Cors Error", icon: "error" });
@@ -416,30 +420,34 @@
             $('#callback_form').on('submit', function(event) {
                 event.preventDefault();
                 
-                // Get standard inputs
                 var clientId = $('#clientId').val();
                 var clientSecret = $('#clientSecret').val();
                 var clientVersion = $('#clientVersion').val();
                 var env = $('input[name="env"]:checked').val();
                 
-                // Gather Checkboxes
-                var webhook_events = [];
-                $('input[name="webhook_events[]"]:checked').each(function() {
-                    webhook_events.push($(this).val());
-                });
-
-                if (webhook_events.length === 0) {
-                    Swal.fire({ title: "Error", text: "Please select at least one webhook event.", icon: "error" });
-                    return;
-                }
-
-                // Dynamically build the webhooks array
+                var isValid = true;
                 var webhooksPayload = [];
-                $('.webhook-entry').each(function() {
+
+                // Loop through EACH webhook entry block individually
+                $('.webhook-entry').each(function(index) {
                     var u = $(this).find('.webhook-username').val();
                     var p = $(this).find('.webhook-password').val();
                     var url = $(this).find('.webhook-url').val();
 
+                    // Find checked events ONLY inside this specific webhook block
+                    var events = [];
+                    $(this).find('input[type="checkbox"]:checked').each(function() {
+                        events.push($(this).val());
+                    });
+
+                    // Validation: Stop if they didn't pick any events for this URL
+                    if (events.length === 0) {
+                        Swal.fire({ title: "Error", text: "Please select at least one event for Webhook #" + (index + 1), icon: "error" });
+                        isValid = false;
+                        return false; 
+                    }
+
+                    // Push to the array
                     webhooksPayload.push({
                         "channel": {
                             "type": "HTTPS",
@@ -447,11 +455,12 @@
                             "username": u,
                             "url": url
                         },
-                        "events": webhook_events
+                        "events": events
                     });
                 });
 
-                // Environment URLs
+                if (!isValid) return; // Stop the API call if validation failed
+
                 var tokenUrl, webhookHost;
                 if(env == "PROD"){
                     tokenUrl = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token";
@@ -461,7 +470,6 @@
                     webhookHost = "https://api-preprod.phonepe.com/apis/pg-sandbox/config/v1/webhook";
                 }
 
-                // Execute the Config process
                 webhookConfig();
 
                 function webhookConfig(){
@@ -490,7 +498,6 @@
                                 "Content-Type": "application/json",
                                 "authorization": "O-Bearer " + response.access_token
                             },
-                            // Send the dynamically built array instead of a single hardcoded object
                             "data": JSON.stringify({
                                 "webhooks": webhooksPayload
                             }),
@@ -504,7 +511,6 @@
                             }
                         }).fail(function (response) {
                             alert(response.responseJSON.message);
-                            console.log(response);
                         });
                         
                     }).fail(function(response) {
